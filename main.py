@@ -39,11 +39,7 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome"}
-
-@app.post("/update")
+@app.post("/")
 async def update_npm(mahasiswa: Mahasiswa):
     query = mahasiswas.insert().values(npm=mahasiswa.npm, nama=mahasiswa.nama)
     await database.execute(query)
