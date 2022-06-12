@@ -10,7 +10,7 @@ database = databases.Database(DATABASE_URL)
 
 metadata = sqlalchemy.MetaData()
 
-mahasiswa = sqlalchemy.Table(
+mahasiswas = sqlalchemy.Table(
     "mahasiswa",
     metadata,
     sqlalchemy.Column("npm", sqlalchemy.String, primary_key=True),
@@ -26,6 +26,10 @@ metadata.create_all(engine)
 
 app = FastAPI()
 
+class Mahasiswa(BaseModel):
+    npm: str
+    nama: str
+
 @app.on_event("startup")
 async def startup():
     await database.connect()
@@ -40,7 +44,7 @@ def read_root():
     return {"message": "Welcome"}
 
 @app.post("/update")
-async def update_npm(npm: str, nama: str):
-    query = mahasiswa.insert().values(npm=npm, nama=nama)
+async def update_npm(mahasiswa: Mahasiswa):
+    query = mahasiswas.insert().values(npm=mahasiswa.npm, nama=mahasiswa.nama)
     await database.execute(query)
     return {"status":"OK"}
