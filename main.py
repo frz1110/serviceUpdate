@@ -39,12 +39,6 @@ async def shutdown():
 def read_root():
     return {"message": "Welcome"}
 
-@app.get("/read/{npm}")
-async def read_npm(npm: str):
-    query = mahasiswa.select().where(mahasiswa.c.npm == npm)
-    result = await database.fetch_one(query)
-    return {"status":"OK", "NPM":npm, "Nama":result.nama}
-
 @app.post("/update")
 async def update_npm(npm: str, nama: str):
     query = mahasiswa.insert().values(npm=npm, nama=nama)
